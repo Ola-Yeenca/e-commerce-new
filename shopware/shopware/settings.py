@@ -1,4 +1,5 @@
 from pathlib import Path
+from urllib import parse
 import dj_database_url
 import os
 
@@ -85,6 +86,36 @@ DATABASES = {
         conn_max_age=600
     )
 }
+
+database_url = parse.urlparse(os.environ.get('DATABASE_URL'))
+
+default_values = {
+    'USER': 'default_user',
+    'PASSWORD': 'default_password',
+    'HOST': 'localhost',
+    'PORT': '5432',
+}
+
+
+# Override default values with values from the URI
+for key, value in parse.parse_qs(database_url.query).items():
+    default_values[key] = value[0]
+
+DATABASES = {
+    'default': dj_database_url.config(
+        default={
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': database_url.path[1:],
+            'USER': default_values['USER'],
+            'PASSWORD': default_values['PASSWORD'],
+            'HOST': default_values['HOST'],
+            'PORT': default_values['PORT'],
+        },
+        conn_max_age=600
+    )
+}
+
+
 
 
 # Password validation
