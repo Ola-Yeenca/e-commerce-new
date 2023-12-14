@@ -88,31 +88,6 @@ DATABASES = {
 
 DATABASES['default'] = dj_database_url.parse('postgres://dbyeenca_user:iKaXmNyokBkKqQMPGOU1SEVXmdkCUlhz@dpg-clt5c08l5elc73dk8dd0-a.frankfurt-postgres.render.com/dbyeenca')
 
-default_values = {
-    'USER': 'default_user',
-    'PASSWORD': 'default_password',
-    'HOST': 'localhost',
-    'PORT': '5432',
-}
-
-
-# Override default values with values from the URI
-for key, value in parse.parse_qs(database_url.query).items():
-    default_values[key] = value[0]
-
-DATABASES = {
-    'default': dj_database_url.config(
-        default={
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': database_url.path[1:],
-            'USER': default_values['USER'],
-            'PASSWORD': default_values['PASSWORD'],
-            'HOST': default_values['HOST'],
-            'PORT': default_values['PORT'],
-        },
-        conn_max_age=600
-    )
-}
 
 
 
