@@ -80,14 +80,13 @@ WSGI_APPLICATION = 'shopware.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config(
-        # Feel free to alter this value to suit your needs.
-        default='postgresql://postgres:postgres@localhost:5432/shopware',
-        conn_max_age=600
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
 
-database_url = parse.urlparse(os.environ.get('DATABASE_URL'))
+DATABASES['default'] = dj_database_url.parse('postgres://dbyeenca_user:iKaXmNyokBkKqQMPGOU1SEVXmdkCUlhz@dpg-clt5c08l5elc73dk8dd0-a.frankfurt-postgres.render.com/dbyeenca')
 
 default_values = {
     'USER': 'default_user',
